@@ -2,7 +2,7 @@ from coordinate_id import CoordinateId
 from transmitter.transmitter_id import TransmitterId
 
 
-class Spot:
+class SpotAggregate:
     def __init__(
         self,
         name: str,
