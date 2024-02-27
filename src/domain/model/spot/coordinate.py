@@ -13,6 +13,15 @@ class Coordinate:
         if not -180 <= longitude <= 180:
             raise ValueError("Longitude must be between -180 and 180")
 
-        self.id = CoordinateId()
-        self.latitude = latitude
-        self.longitude = longitude
+        self.__id = CoordinateId()
+        self.__latitude = latitude
+        self.__longitude = longitude
+
+    def get_id_of_private_value(self):
+        return self.__id
+
+    def get_latitude_of_private_value(self):
+        return self.__latitude
+
+    def get_longitude_of_private_value(self):
+        return self.__longitude
