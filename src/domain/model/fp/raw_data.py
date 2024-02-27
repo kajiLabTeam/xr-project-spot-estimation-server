@@ -6,5 +6,5 @@ class RawData:
         self,
         raw_data: bytes,
     ):
-        self.id = RawDataId()
-        self.raw_data = raw_data
+        self.__id = RawDataId()
+        self.__raw_data = raw_data

@@ -1,6 +1,7 @@
-from fp_id import FpId
 from fp_model_id import FpModelId
 from raw_data_id import RawDataId
+
+from domain.model.fp.fp_aggregate_id import FpAggregateId
 
 
 class FpAggregate:
@@ -9,6 +10,6 @@ class FpAggregate:
         fp_model_id: FpModelId,
         raw_data_id: RawDataId,
     ):
-        self.id = FpId()
-        self.fp_model_id = fp_model_id
-        self.raw_data_id = raw_data_id
+        self.__id = FpAggregateId()
+        self.__fp_model_id = fp_model_id
+        self.__raw_data_id = raw_data_id
