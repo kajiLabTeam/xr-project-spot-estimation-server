@@ -1,14 +1,15 @@
-from spot.spot_id import SpotId
 from spot_collection_id import SpotCollectionId
+
+from domain.model.spot.spot_aggregate_id import SpotAggregateId
 
 
 class SpotCollectionAggregate:
     def __init__(
         self,
-        spot_id_collection: list[SpotId],
+        spot_id_collection: list[SpotAggregateId],
     ):
-        self.id = SpotCollectionId()
-        self.spot_id_collection = spot_id_collection
+        self.__id = SpotCollectionId()
+        self.__spot_id_collection = spot_id_collection
 
-    def add_spot_id(self, spot_id: SpotId):
-        self.spot_id_collection.append(spot_id)
+    def add_spot_id(self, spot_id: SpotAggregateId):
+        self.__spot_id_collection.append(spot_id)

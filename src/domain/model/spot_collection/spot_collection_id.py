@@ -3,4 +3,4 @@ import uuid
 
 class SpotCollectionId:
     def __init__(self):
-        self.id = uuid.uuid4()
+        self.__id = uuid.uuid4()
