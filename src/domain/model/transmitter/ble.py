@@ -7,6 +7,6 @@ class Ble:
         ssid: str,
         rssi: int,
     ):
-        self.id = BleId()
-        self.ssid = ssid
-        self.rssi = rssi
+        self.__id = BleId()
+        self.__ssid = ssid
+        self.__rssi = rssi

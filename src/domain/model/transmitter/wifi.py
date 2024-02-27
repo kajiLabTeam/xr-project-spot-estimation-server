@@ -7,6 +7,6 @@ class Wifi:
         ssid: str,
         rssi: int,
     ):
-        self.id = WifiId()
-        self.ssid = ssid
-        self.rssi = rssi
+        self.__id = WifiId()
+        self.__ssid = ssid
+        self.__rssi = rssi
