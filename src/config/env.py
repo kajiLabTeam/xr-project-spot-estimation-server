@@ -9,7 +9,7 @@ class PostgresEnv:
     def __init__(self):
         self.__host = os.getenv("POSTGRES_HOST")
         self.__port = os.getenv("POSTGRES_PORT")
-        self.__database = os.getenv("POSTGRES_DB_NAME")
+        self.__database = os.getenv("POSTGRES_DB")
         self.__user = os.getenv("POSTGRES_USER")
         self.__password = os.getenv("POSTGRES_PASSWORD")
 
@@ -47,3 +47,6 @@ class MinioEnv:
 
     def get_secret_key_of_private_value(self):
         return self.__secret_key
+
+
+print(PostgresEnv().get_password_of_private_value())
