@@ -2,9 +2,10 @@ from abc import ABCMeta, abstractmethod
 from typing import Any
 
 import psycopg
-from model.raw_data.aggregate import RawDataAggregate
-from model.spot.spot_aggregate_id import SpotAggregateId
 from psycopg.rows import TupleRow
+
+from domain.model.raw_data.aggregate import RawDataAggregate
+from domain.model.spot.spot_aggregate_id import SpotAggregateId
 
 
 class RawDataRepositoryImpl(metaclass=ABCMeta):

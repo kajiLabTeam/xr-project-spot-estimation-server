@@ -1,10 +1,11 @@
 from abc import ABCMeta, abstractmethod
 
 import psycopg
-from model.fp_model.fp_model_aggregate_id import FpModelAggregateId
-from model.spot.aggregate import SpotAggregate
-from model.spot.spot_aggregate_id import SpotAggregateId
 from psycopg.rows import TupleRow
+
+from domain.model.fp_model.fp_model_aggregate_id import FpModelAggregateId
+from domain.model.spot.aggregate import SpotAggregate
+from domain.model.spot.spot_aggregate_id import SpotAggregateId
 
 
 class SpotRepositoryImpl(metaclass=ABCMeta):

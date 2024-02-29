@@ -1,9 +1,4 @@
-from fp_model_aggregate_id import FpModelAggregateId
-from psycopg import Connection
-from psycopg.rows import TupleRow
-from spot_collection.aggregate import SpotCollectionAggregate
-
-from domain.repository_impl.spot_repository_impl import SpotRepositoryImpl
+from domain.model.fp_model.fp_model_aggregate_id import FpModelAggregateId
 
 
 class FpModelAggregate:
@@ -32,23 +27,3 @@ class FpModelAggregate:
         self, fp_model_file: bytes
     ) -> float:
         return 100.0
-
-    # TODO : FPモデルとの一致度が最も高いFPモデル集約を取得する処理を実装する
-    def get_highest_rate_of_agreement_with_fp_model(
-        self,
-        conn: Connection[TupleRow],
-        spot_repository: SpotRepositoryImpl,
-        fp_model: "FpModelAggregate",
-        spot_id_collection: SpotCollectionAggregate,
-    ) -> "FpModelAggregate":
-        max_agreement_rate = 0
-        result_fp_model = None
-        # FPモデルを元にスポットを特定する
-        for spot_id in spot_id_collection.get_id_collection_of_private_value():
-            spot = spot_repository.find_for_spot_id(conn=conn, spot_id=spot_id)
-            agreement_rate = self.calculate_percentage_of_agreement_for_fp_model(
-                fp_model.get_fp_model_of_private_value()
-            )
-            # FPモデルとの一致率が一番高いスポットを特定
-            if agreement_rate > max_agreement_rate:
-                max_agreement_rate = agreement_rate

@@ -2,11 +2,12 @@ from abc import ABCMeta, abstractmethod
 from typing import List
 
 import psycopg
-from model.spot.spot_aggregate_id import SpotAggregateId
-from model.transmitter.aggregate import TransmitterAggregate
-from model.transmitter.ble import Ble
-from model.transmitter.wifi import Wifi
 from psycopg.rows import TupleRow
+
+from domain.model.spot.spot_aggregate_id import SpotAggregateId
+from domain.model.transmitter.aggregate import TransmitterAggregate
+from domain.model.transmitter.ble import Ble
+from domain.model.transmitter.wifi import Wifi
 
 
 class TransmitterRepositoryImpl(metaclass=ABCMeta):

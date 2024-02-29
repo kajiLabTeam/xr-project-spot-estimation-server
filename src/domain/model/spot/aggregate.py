@@ -1,8 +1,8 @@
-from coordinate import Coordinate
-from fp_model.fp_model_aggregate_id import FpModelAggregateId
-from location_type import LocationType
-from spot_aggregate_id import SpotAggregateId
-from transmitter.aggregate import TransmitterAggregate
+from domain.model.fp_model.fp_model_aggregate_id import FpModelAggregateId
+from domain.model.spot.coordinate import Coordinate
+from domain.model.spot.location_type import LocationType
+from domain.model.spot.spot_aggregate_id import SpotAggregateId
+from domain.model.transmitter.aggregate import TransmitterAggregate
 
 
 class SpotAggregate:

@@ -1,4 +1,4 @@
-from wifi_id import WifiId
+from domain.model.transmitter.wifi_id import WifiId
 
 
 class Wifi:

@@ -1,4 +1,4 @@
-from ble_id import BleId
+from domain.model.transmitter.ble_id import BleId
 
 
 class Ble:

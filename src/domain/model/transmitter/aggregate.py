@@ -1,9 +1,9 @@
 from typing import List
 
-from ble import Ble
-from ble_id import BleId
-from wifi import Wifi
-from wifi_id import WifiId
+from domain.model.transmitter.ble import Ble
+from domain.model.transmitter.ble_id import BleId
+from domain.model.transmitter.wifi import Wifi
+from domain.model.transmitter.wifi_id import WifiId
 
 
 class TransmitterAggregate:

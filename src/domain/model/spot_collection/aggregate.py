@@ -8,8 +8,10 @@ from spot_collection_id import SpotCollectionId
 
 from domain.model.fp_model.aggregate import FpModelAggregate
 from domain.model.spot.spot_aggregate_id import SpotAggregateId
-from domain.repository_impl.fp_model_repository_impl import FpModelRepositoryImpl
-from domain.repository_impl.transmitter_repository_impl import TransmitterRepositoryImpl
+from domain.repository_impl.fp_model_repository_impl import \
+    FpModelRepositoryImpl
+from domain.repository_impl.transmitter_repository_impl import \
+    TransmitterRepositoryImpl
 
 
 class SpotCollectionAggregate:
