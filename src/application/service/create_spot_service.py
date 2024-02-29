@@ -1,9 +1,12 @@
 from domain.model.raw_data.aggregate import RawDataAggregate
 from domain.model.spot.aggregate import SpotAggregate
-from domain.repository_impl.fp_model_repository_impl import FpModelRepositoryImpl
-from domain.repository_impl.raw_data_repository_impl import RawDataRepositoryImpl
+from domain.repository_impl.fp_model_repository_impl import \
+    FpModelRepositoryImpl
+from domain.repository_impl.raw_data_repository_impl import \
+    RawDataRepositoryImpl
 from domain.repository_impl.spot_repository_impl import SpotRepositoryImpl
-from domain.repository_impl.transmitter_repository_impl import TransmitterRepositoryImpl
+from domain.repository_impl.transmitter_repository_impl import \
+    TransmitterRepositoryImpl
 from infrastructure.connection import DBConnection, MinioConnection
 
 conn = DBConnection().connect()
