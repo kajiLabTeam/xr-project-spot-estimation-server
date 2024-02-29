@@ -1,29 +1,28 @@
 from abc import ABCMeta, abstractmethod
-from typing import List
+from typing import Any
 
 import psycopg
+from model.fp_model.aggregate import FpModelAggregate
 from model.spot.spot_aggregate_id import SpotAggregateId
-from model.transmitter.aggregate import TransmitterAggregate
-from model.transmitter.ble import Ble
-from model.transmitter.wifi import Wifi
 from psycopg.rows import TupleRow
 
 
-class TransmitterRepositoryImpl(metaclass=ABCMeta):
+class FpModelRepositoryImpl(metaclass=ABCMeta):
     @abstractmethod
     def find_for_spot_id(
         self,
+        s3: Any,
         conn: psycopg.Connection[TupleRow],
         spot_id: SpotAggregateId,
-    ) -> TransmitterAggregate:
+    ) -> FpModelAggregate:
         pass
 
     @abstractmethod
     def save(
         self,
+        s3: Any,
         conn: psycopg.Connection[TupleRow],
         spot_id: SpotAggregateId,
-        ble_collection: List[Ble],
-        wifi_collection: List[Wifi],
-    ) -> TransmitterAggregate:
+        fp_model: FpModelAggregate,
+    ) -> FpModelAggregate:
         pass

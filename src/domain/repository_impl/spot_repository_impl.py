@@ -1,23 +1,33 @@
-from abc import ABC, abstractmethod
+from abc import ABCMeta, abstractmethod
 
 import psycopg
+from model.fp_model.fp_model_aggregate_id import FpModelAggregateId
 from model.spot.aggregate import SpotAggregate
+from model.spot.spot_aggregate_id import SpotAggregateId
 from psycopg.rows import TupleRow
 
 
-class SpotRepositoryImpl(ABC):
+class SpotRepositoryImpl(metaclass=ABCMeta):
     @abstractmethod
-    def create_spot(
+    def find_for_spot_id(
         self,
         conn: psycopg.Connection[TupleRow],
-        spot: SpotAggregate,
+        spot_id: SpotAggregateId,
     ) -> SpotAggregate:
         pass
 
     @abstractmethod
-    def get_spot_by_spot_id(
+    def find_for_fp_model_id(
         self,
         conn: psycopg.Connection[TupleRow],
-        spot_id: str,
+        fp_model_id: FpModelAggregateId,
+    ) -> SpotAggregate:
+        pass
+
+    @abstractmethod
+    def save(
+        self,
+        conn: psycopg.Connection[TupleRow],
+        spot: SpotAggregate,
     ) -> SpotAggregate:
         pass
