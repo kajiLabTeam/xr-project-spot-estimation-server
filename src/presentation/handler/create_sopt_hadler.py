@@ -38,7 +38,7 @@ class CreateSpotResponse(BaseModel):
     longitude: float
 
 
-@router.get("/api/spot/create", response_model=CreateSpotResponse)
+@router.post("/api/spot/create", response_model=CreateSpotResponse)
 async def create_spot(request: CreateSpotRequest):
     try:
         raw_data_file = await request.rawDataFile.read()
