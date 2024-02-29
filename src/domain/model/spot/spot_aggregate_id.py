@@ -1,6 +1,6 @@
-import uuid
+from uuid import UUID, uuid4
 
 
 class SpotAggregateId:
-    def __init__(self):
-        self.__id = uuid.uuid4()
+    def __init__(self, id: UUID = uuid4()):
+        self.__id = id
