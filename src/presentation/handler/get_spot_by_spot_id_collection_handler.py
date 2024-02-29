@@ -39,7 +39,7 @@ class GetSpotBySpotIdCollectionResponse(BaseModel):
 router = APIRouter()
 
 
-@router.get("/api/spot/search", response_model=GetSpotBySpotIdCollectionResponse)
+@router.post("/api/spot/search", response_model=GetSpotBySpotIdCollectionResponse)
 async def get_spot_by_spot_id_collection(request: GetSpotBySpotIdCollectionRequest):
     try:
         spot_collection = SpotCollectionAggregateFactory().create(
