@@ -5,8 +5,7 @@ from presentation.handler.create_sopt_hadler import \
 from presentation.handler.get_spot_by_spot_id_collection_handler import \
     router as get_spot_by_spot_id_collection_router
 
-if __name__ == "__main__":
-    app = FastAPI()
+app = FastAPI()
 
-    app.include_router(get_spot_by_spot_id_collection_router)
-    app.include_router(create_spot_router)
+app.include_router(get_spot_by_spot_id_collection_router)
+app.include_router(create_spot_router)
