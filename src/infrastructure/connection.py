@@ -17,7 +17,7 @@ class DBConnection:
             port=env.get_port_of_private_value(),
             user=env.get_user_of_private_value(),
             password=env.get_password_of_private_value(),
-            database=env.get_database_of_private_value(),
+            dbname=env.get_database_of_private_value(),
         )
 
 

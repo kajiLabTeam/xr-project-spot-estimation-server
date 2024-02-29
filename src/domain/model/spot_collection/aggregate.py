@@ -1,10 +1,10 @@
 from typing import Any, List
 from uuid import UUID
 
-from model.transmitter.aggregate import TransmitterAggregate
+from domain.model.transmitter.aggregate import TransmitterAggregate
 from psycopg.connection import Connection
 from psycopg.rows import TupleRow
-from spot_collection_id import SpotCollectionId
+from domain.model.spot_collection.spot_collection_id import SpotCollectionId
 
 from domain.model.fp_model.aggregate import FpModelAggregate
 from domain.model.spot.spot_aggregate_id import SpotAggregateId
