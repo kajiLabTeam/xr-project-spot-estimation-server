@@ -4,6 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+psycopg = {extras = ["binary"], version = "*"}
+python-dotenv = "*"
+boto3 = "*"
+fastapi = "*"
+uvicorn = {extras = ["standard"], version = "*"}
 
 [dev-packages]
 
