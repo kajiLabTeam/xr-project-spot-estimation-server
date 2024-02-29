@@ -3,14 +3,15 @@ from typing import List
 from fastapi import APIRouter, HTTPException, UploadFile
 from pydantic import BaseModel
 
-from application.service.get_spot_by_spot_id_collection_service import (
-    GetSpotBySpotIdCollectionService,
-)
+from application.service.get_spot_by_spot_id_collection_service import \
+    GetSpotBySpotIdCollectionService
 from domain.model.raw_data.aggregate import RawDataAggregateFactory
-from domain.model.spot_collection.aggregate import SpotCollectionAggregateFactory
+from domain.model.spot_collection.aggregate import \
+    SpotCollectionAggregateFactory
 from infrastructure.repository.fp_model_repository import FpModelRepository
 from infrastructure.repository.spot_repository import SpotRepository
-from infrastructure.repository.transmitter_repository import TransmitterRepository
+from infrastructure.repository.transmitter_repository import \
+    TransmitterRepository
 
 router = APIRouter()
 

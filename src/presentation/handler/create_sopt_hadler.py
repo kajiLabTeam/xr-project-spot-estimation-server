@@ -7,7 +7,8 @@ from domain.model.spot.aggregate import SpotAggregateFactory
 from infrastructure.repository.fp_model_repository import FpModelRepository
 from infrastructure.repository.raw_data_repository import RawDataRepository
 from infrastructure.repository.spot_repository import SpotRepository
-from infrastructure.repository.transmitter_repository import TransmitterRepository
+from infrastructure.repository.transmitter_repository import \
+    TransmitterRepository
 
 router = APIRouter()
 
