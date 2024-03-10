@@ -1,18 +1,18 @@
 from abc import ABCMeta, abstractmethod
 from typing import Any
 
-import psycopg
-from psycopg.rows import TupleRow
+from psycopg2.extensions import connection
 
-from domain.model.raw_data.aggregate import RawDataAggregate
-from domain.model.spot.spot_aggregate_id import SpotAggregateId
+from domain.models.raw_data.aggregate import RawDataAggregate
+from domain.models.spot.spot_id import SpotAggregateId
 
 
 class RawDataRepositoryImpl(metaclass=ABCMeta):
     @abstractmethod
     def find_for_spot_id(
         self,
-        conn: psycopg.Connection[TupleRow],
+        s3: Any,
+        conn: connection,
         spot_id: SpotAggregateId,
     ) -> RawDataAggregate:
         pass
@@ -21,7 +21,7 @@ class RawDataRepositoryImpl(metaclass=ABCMeta):
     def save(
         self,
         s3: Any,
-        conn: psycopg.Connection[TupleRow],
+        conn: connection,
         spot_id: SpotAggregateId,
         raw_data: RawDataAggregate,
     ) -> RawDataAggregate:
