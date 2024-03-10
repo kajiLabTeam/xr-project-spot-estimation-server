@@ -1,20 +1,16 @@
 from abc import ABCMeta, abstractmethod
-from typing import List
 
-import psycopg
-from psycopg.rows import TupleRow
+from psycopg2.extensions import connection
 
-from domain.model.spot.spot_aggregate_id import SpotAggregateId
-from domain.model.transmitter.aggregate import TransmitterAggregate
-from domain.model.transmitter.ble import Ble
-from domain.model.transmitter.wifi import Wifi
+from domain.models.spot.spot_id import SpotAggregateId
+from domain.models.transmitter.aggregate import TransmitterAggregate
 
 
 class TransmitterRepositoryImpl(metaclass=ABCMeta):
     @abstractmethod
     def find_for_spot_id(
         self,
-        conn: psycopg.Connection[TupleRow],
+        conn: connection,
         spot_id: SpotAggregateId,
     ) -> TransmitterAggregate:
         pass
@@ -22,9 +18,8 @@ class TransmitterRepositoryImpl(metaclass=ABCMeta):
     @abstractmethod
     def save(
         self,
-        conn: psycopg.Connection[TupleRow],
+        conn: connection,
         spot_id: SpotAggregateId,
-        ble_collection: List[Ble],
-        wifi_collection: List[Wifi],
+        transmitter: TransmitterAggregate,
     ) -> TransmitterAggregate:
         pass

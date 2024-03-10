@@ -1,11 +1,10 @@
 from abc import ABCMeta, abstractmethod
 from typing import Any
 
-import psycopg
-from psycopg.rows import TupleRow
+from psycopg2.extensions import connection
 
-from domain.model.fp_model.aggregate import FpModelAggregate
-from domain.model.spot.spot_aggregate_id import SpotAggregateId
+from domain.models.fp_model.aggregate import FpModelAggregate
+from domain.models.spot.spot_id import SpotAggregateId
 
 
 class FpModelRepositoryImpl(metaclass=ABCMeta):
@@ -13,7 +12,7 @@ class FpModelRepositoryImpl(metaclass=ABCMeta):
     def find_for_spot_id(
         self,
         s3: Any,
-        conn: psycopg.Connection[TupleRow],
+        conn: connection,
         spot_id: SpotAggregateId,
     ) -> FpModelAggregate:
         pass
@@ -22,7 +21,7 @@ class FpModelRepositoryImpl(metaclass=ABCMeta):
     def save(
         self,
         s3: Any,
-        conn: psycopg.Connection[TupleRow],
+        conn: connection,
         spot_id: SpotAggregateId,
         fp_model: FpModelAggregate,
     ) -> FpModelAggregate:
