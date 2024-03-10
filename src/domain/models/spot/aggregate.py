@@ -1,35 +1,28 @@
-from domain.model.fp_model.fp_model_aggregate_id import FpModelAggregateId
-from domain.model.spot.coordinate import Coordinate
-from domain.model.spot.location_type import LocationType
-from domain.model.spot.spot_aggregate_id import SpotAggregateId
-from domain.model.transmitter.aggregate import TransmitterAggregate
+from ulid import ULID
+
+from domain.models.fp_model.fp_model_id import FpModelAggregateId
+from domain.models.spot.coordinate import Coordinate
+from domain.models.spot.location_type import LocationType
+from domain.models.spot.spot_id import SpotAggregateId
+from domain.models.transmitter.aggregate import TransmitterAggregate
 
 
 class SpotAggregate:
     def __init__(
         self,
-        id: SpotAggregateId | None,
         name: str,
-        floors: int,
+        floor: int,
         location_type: LocationType,
         coordinate: Coordinate,
+        id: SpotAggregateId = SpotAggregateId(),
     ) -> None:
-        if id is None:
-            self.__id = SpotAggregateId()
-        else:
-            self.__id = id
+        self.__id = id
         self.__name = name
-        self.__floors = floors
+        self.__floor = floor
         self.__locationType = location_type
         self.__coordinate = coordinate
         self.__transmitter: TransmitterAggregate | None = None
         self.__fp_id: FpModelAggregateId | None = None
-
-    def link_to_aggregate_fp_model(self, fp_model_id: FpModelAggregateId):
-        self.fp_model_id = fp_model_id
-
-    def link_to_aggregate_transmitter(self, transmitter: TransmitterAggregate):
-        self.transmitter = transmitter
 
     def get_id_of_private_value(self) -> SpotAggregateId:
         return self.__id
@@ -37,8 +30,8 @@ class SpotAggregate:
     def get_name_of_private_value(self) -> str:
         return self.__name
 
-    def get_floors_of_private_value(self) -> int:
-        return self.__floors
+    def get_floor_of_private_value(self) -> int:
+        return self.__floor
 
     def get_location_type_of_private_value(self) -> LocationType:
         return self.__locationType
@@ -56,23 +49,34 @@ class SpotAggregate:
             raise ValueError("transmitter_id is not set")
         return self.__transmitter
 
+    def link_to_aggregate_fp_model(self, fp_model_id: FpModelAggregateId):
+        self.fp_model_id = fp_model_id
+
+    def link_to_aggregate_transmitter(self, transmitter: TransmitterAggregate):
+        self.transmitter = transmitter
+
 
 # ファクトリ:特定の引数を受け取ってドメインオブジェクトを生成するメソッド
 class SpotAggregateFactory:
     @staticmethod
     def create(
         name: str,
-        floors: int,
+        floor: int,
         location_type: str,
         latitude: float,
         longitude: float,
+        id: str | None = None,
     ) -> SpotAggregate:
+        if type(id) == str:
+            __id = SpotAggregateId(ULID.from_str(id))
+        else:
+            __id = SpotAggregateId()
         __coordinate = Coordinate(latitude, longitude)
         __location_type = LocationType(location_type)
         return SpotAggregate(
-            id=None,
+            id=__id,
             name=name,
-            floors=floors,
+            floor=floor,
             location_type=__location_type,
             coordinate=__coordinate,
         )
