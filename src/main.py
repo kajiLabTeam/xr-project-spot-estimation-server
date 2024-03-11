@@ -40,7 +40,6 @@ async def http_exception_handler(request: Request, exc: HTTPException):
     )
 
 
-
 if __name__ == "__main__":
     import uvicorn
 
