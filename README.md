@@ -25,9 +25,7 @@ pipenv shell
 
 ### サーバの実行
 ```bash
-cd src # main.pyが存在するディレクトリ移動
-
-uvicorn main:app --host 0.0.0.0 --port 80 --reload # エントリーポイントを実行
+python src/main.py
 ```
 
 ## その他
