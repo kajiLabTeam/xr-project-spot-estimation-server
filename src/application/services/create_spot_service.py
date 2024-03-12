@@ -1,3 +1,4 @@
+from domain.models.application.aggregate import ApplicationAggregate
 from domain.models.fp_model.aggregate import FpModelAggregateFactory
 from domain.models.raw_data.aggregate import RawDataAggregate
 from domain.models.spot.aggregate import SpotAggregate
@@ -27,8 +28,9 @@ class CreateSpotService:
 
     def run(
         self,
-        raw_data: RawDataAggregate,
         spot: SpotAggregate,
+        raw_data: RawDataAggregate,
+        application: ApplicationAggregate,
     ) -> SpotAggregate:
         conn = DBConnection().connect()
         s3 = MinioConnection().connect()

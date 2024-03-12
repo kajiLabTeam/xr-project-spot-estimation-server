@@ -5,13 +5,15 @@ import psycopg2.sql as sql
 from psycopg2.extensions import connection
 
 from config.const import APPLICATION_BUCKET_NAME, RAW_DATA_FILE_BUCKET_NAME
+from domain.models.application.aggregate import ApplicationAggregate
 from infrastructure.record.raw_data_record import RawDataRecord
-from utils.global_variable import APPLICATION
 
 
 class RawDataGateway:
     def find_by_spot_id(
-        self, conn: connection, spot_id: str
+        self,
+        conn: connection,
+        spot_id: str,
     ) -> Optional[RawDataRecord]:
         with conn.cursor() as cursor:
             cursor.execute(
@@ -50,8 +52,10 @@ class RawDataGateway:
                 created_at=inserted_data[3],
             )
 
-    def download(self, s3: Any, key: str) -> bytes:
-        key = f"{APPLICATION.id}/{RAW_DATA_FILE_BUCKET_NAME}/{key}"
+    def download(self, s3: Any, key: str, application: ApplicationAggregate) -> bytes:
+        key = (
+            f"{application.get_id_of_private_value()}/{RAW_DATA_FILE_BUCKET_NAME}/{key}"
+        )
         obj = s3.get_object(Bucket=APPLICATION_BUCKET_NAME, Key=key)
         return obj["Body"].read()
 
@@ -60,9 +64,12 @@ class RawDataGateway:
         s3: Any,
         key: str,
         raw_data_file: bytes,
+        application: ApplicationAggregate,
     ) -> bytes:
         buffer = BytesIO(raw_data_file)
-        key = f"{APPLICATION.id}/{RAW_DATA_FILE_BUCKET_NAME}/{key}"
+        key = (
+            f"{application.get_id_of_private_value()}/{RAW_DATA_FILE_BUCKET_NAME}/{key}"
+        )
 
         s3.upload_fileobj(buffer, APPLICATION_BUCKET_NAME, key)
         buffer.close()

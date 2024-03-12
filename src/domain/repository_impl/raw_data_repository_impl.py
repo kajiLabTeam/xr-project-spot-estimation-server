@@ -3,6 +3,7 @@ from typing import Any
 
 from psycopg2.extensions import connection
 
+from domain.models.application.aggregate import ApplicationAggregate
 from domain.models.raw_data.aggregate import RawDataAggregate
 from domain.models.spot.spot_id import SpotAggregateId
 
@@ -14,6 +15,7 @@ class RawDataRepositoryImpl(metaclass=ABCMeta):
         s3: Any,
         conn: connection,
         spot_id: SpotAggregateId,
+        application: ApplicationAggregate,
     ) -> RawDataAggregate:
         pass
 
@@ -24,5 +26,6 @@ class RawDataRepositoryImpl(metaclass=ABCMeta):
         conn: connection,
         spot_id: SpotAggregateId,
         raw_data: RawDataAggregate,
+        application: ApplicationAggregate,
     ) -> RawDataAggregate:
         pass

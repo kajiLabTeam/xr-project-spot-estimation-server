@@ -2,6 +2,7 @@ from typing import Any
 
 from psycopg2.extensions import connection
 
+from domain.models.application.aggregate import ApplicationAggregate
 from domain.models.fp_model.aggregate import FpModelAggregate
 from domain.models.spot.spot_id import SpotAggregateId
 from domain.repository_impl.fp_model_repository_impl import \
@@ -19,6 +20,7 @@ class FpModelRepository(FpModelRepositoryImpl):
         s3: Any,
         conn: connection,
         spot_id: SpotAggregateId,
+        application: ApplicationAggregate,
     ) -> FpModelAggregate:
         with conn as conn:
             fp_model_record = fp_model_gateway.find_by_spot_id(
@@ -37,7 +39,9 @@ class FpModelRepository(FpModelRepositoryImpl):
                 + fp_model_record.get_extension_of_private_value()
             )
             # minioからファイルを取得
-            fp_model = fp_model_gateway.download(s3=s3, key=key)
+            fp_model = fp_model_gateway.download(
+                s3=s3, key=key, application=application
+            )
 
             return FpModelAggregate(
                 fp_model_file=fp_model,
@@ -50,6 +54,7 @@ class FpModelRepository(FpModelRepositoryImpl):
         conn: connection,
         spot_id: SpotAggregateId,
         fp_model: FpModelAggregate,
+        application: ApplicationAggregate,
     ) -> FpModelAggregate:
         with conn as conn:
             # FPモデルをDBに保存
@@ -73,6 +78,7 @@ class FpModelRepository(FpModelRepositoryImpl):
                 s3=s3,
                 key=key,
                 fp_model_file=fp_model.get_fp_model_of_private_value(),
+                application=application,
             )
 
             return FpModelAggregate(

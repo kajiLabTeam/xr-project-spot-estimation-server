@@ -5,8 +5,8 @@ import psycopg2.sql as sql
 from psycopg2.extensions import connection
 
 from config.const import APPLICATION_BUCKET_NAME, FP_MODEL_BUCKET_NAME
+from domain.models.application.aggregate import ApplicationAggregate
 from infrastructure.record.fp_model_record import FpModelRecord
-from utils.global_variable import APPLICATION
 
 
 class FpModelGateway:
@@ -55,8 +55,8 @@ class FpModelGateway:
                 created_at=inserted_data[3],
             )
 
-    def download(self, s3: Any, key: str) -> bytes:
-        key = f"{APPLICATION.id}/{FP_MODEL_BUCKET_NAME}/{key}"
+    def download(self, s3: Any, key: str, application: ApplicationAggregate) -> bytes:
+        key = f"{application.get_id_of_private_value()}/{FP_MODEL_BUCKET_NAME}/{key}"
         obj = s3.get_object(Bucket=APPLICATION_BUCKET_NAME, Key=key)
         return obj["Body"].read()
 
@@ -65,9 +65,10 @@ class FpModelGateway:
         s3: Any,
         key: str,
         fp_model_file: bytes,
+        application: ApplicationAggregate,
     ) -> bytes:
         buffer = BytesIO(fp_model_file)
-        key = f"{APPLICATION.id}/{FP_MODEL_BUCKET_NAME}/{key}"
+        key = f"{application.get_id_of_private_value()}/{FP_MODEL_BUCKET_NAME}/{key}"
 
         s3.upload_fileobj(buffer, APPLICATION_BUCKET_NAME, key)
         buffer.close()

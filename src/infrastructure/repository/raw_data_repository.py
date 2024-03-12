@@ -2,6 +2,7 @@ from typing import Any
 
 from psycopg2.extensions import connection
 
+from domain.models.application.aggregate import ApplicationAggregate
 from domain.models.raw_data.aggregate import RawDataAggregate
 from domain.models.spot.spot_id import SpotAggregateId
 from domain.repository_impl.raw_data_repository_impl import \
@@ -19,6 +20,7 @@ class RawDataRepository(RawDataRepositoryImpl):
         s3: Any,
         conn: connection,
         spot_id: SpotAggregateId,
+        application: ApplicationAggregate,
     ) -> RawDataAggregate:
         with conn as conn:
             raw_data_record = raw_data_gateway.find_by_spot_id(
@@ -38,6 +40,7 @@ class RawDataRepository(RawDataRepositoryImpl):
             raw_data_file = raw_data_gateway.download(
                 s3=s3,
                 key=key,
+                application=application,
             )
 
             return RawDataAggregate(
@@ -51,6 +54,7 @@ class RawDataRepository(RawDataRepositoryImpl):
         conn: connection,
         spot_id: SpotAggregateId,
         raw_data: RawDataAggregate,
+        application: ApplicationAggregate,
     ) -> RawDataAggregate:
         with conn as conn:
             raw_data_insert_result = raw_data_gateway.save(
@@ -74,6 +78,7 @@ class RawDataRepository(RawDataRepositoryImpl):
                 s3=s3,
                 key=key,
                 raw_data_file=raw_data.get_raw_data_private_value(),
+                application=application,
             )
 
             return RawDataAggregate(

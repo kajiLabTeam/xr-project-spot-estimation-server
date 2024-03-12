@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 from application.services.get_spot_by_spot_id_collection_service import \
     GetSpotBySpotIdCollectionService
+from domain.models.application.aggregate import ApplicationAggregate
 from domain.models.raw_data.aggregate import RawDataAggregateFactory
 from domain.models.spot_collection.aggregate import \
     SpotCollectionAggregateFactory
@@ -13,7 +14,6 @@ from infrastructure.repository.spot_repository import SpotRepository
 from infrastructure.repository.transmitter_repository import \
     TransmitterRepository
 from presentation.middleware.application_middleware import get_credential
-from utils.global_variable import APPLICATION
 
 
 class GetSpotBySpotIdCollectionResponse(BaseModel):
@@ -41,9 +41,6 @@ async def get_spot_by_spot_id_collection(
     credentials: Tuple[str, str] = Depends(get_credential),
 ):
     try:
-        application_id, _ = credentials
-        APPLICATION.id = application_id
-
         spot_collection = SpotCollectionAggregateFactory().create(
             spot_id_collection=spotIds
         )
@@ -53,8 +50,12 @@ async def get_spot_by_spot_id_collection(
             raw_data_file=raw_data_file,
         )
 
+        application_id, secret_key = credentials
+        application = ApplicationAggregate(application_id, secret_key)
+
         spot = get_spot_by_spot_id_collection_service.run(
             raw_data=raw_data,
+            application=application,
             spot_collection=spot_collection,
         )
 

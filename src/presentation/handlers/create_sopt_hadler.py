@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from pydantic import BaseModel
 
 from application.services.create_spot_service import CreateSpotService
+from domain.models.application.aggregate import ApplicationAggregate
 from domain.models.raw_data.aggregate import RawDataAggregateFactory
 from domain.models.spot.aggregate import SpotAggregateFactory
 from infrastructure.repository.fp_model_repository import FpModelRepository
@@ -12,14 +13,13 @@ from infrastructure.repository.spot_repository import SpotRepository
 from infrastructure.repository.transmitter_repository import \
     TransmitterRepository
 from presentation.middleware.application_middleware import get_credential
-from utils.global_variable import APPLICATION
 
 
 class CreateSpotResponse(BaseModel):
     id: str
     name: str
     floor: int
-    location_type: str
+    locationType: str
     latitude: float
     longitude: float
 
@@ -35,7 +35,7 @@ create_spot_service = CreateSpotService(
 )
 
 
-@router.post("/api/spot/create", response_model=CreateSpotResponse)
+@router.post("/api/spot/create", response_model=CreateSpotResponse, status_code=201)
 async def create_spot(
     name: str = Form(...),
     floor: int = Form(...),
@@ -46,9 +46,6 @@ async def create_spot(
     credentials: Tuple[str, str] = Depends(get_credential),
 ):
     try:
-        application_id, _ = credentials
-        APPLICATION.id = application_id
-
         raw_data_file = await rawDataFile.read()
 
         raw_data = RawDataAggregateFactory.create(
@@ -63,17 +60,21 @@ async def create_spot(
             longitude=longitude,
         )
 
+        application_id, secret_key = credentials
+        application = ApplicationAggregate(application_id, secret_key)
+
         # スポット情報を保存
         create_spot_service.run(
             raw_data=raw_data,
             spot=spot_aggregate,
+            application=application,
         )
 
         return CreateSpotResponse(
             id=spot_aggregate.get_id_of_private_value().get_id_of_private_value(),
             name=spot_aggregate.get_name_of_private_value(),
             floor=spot_aggregate.get_floor_of_private_value(),
-            location_type=spot_aggregate.get_location_type_of_private_value().get_location_type_of_private_value(),
+            locationType=spot_aggregate.get_location_type_of_private_value().get_location_type_of_private_value(),
             latitude=spot_aggregate.get_coordinate_of_private_value().get_latitude_of_private_value(),
             longitude=spot_aggregate.get_coordinate_of_private_value().get_longitude_of_private_value(),
         )

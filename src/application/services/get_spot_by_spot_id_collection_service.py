@@ -1,3 +1,4 @@
+from domain.models.application.aggregate import ApplicationAggregate
 from domain.models.fp_model.aggregate import FpModelAggregateFactory
 from domain.models.raw_data.aggregate import RawDataAggregate
 from domain.models.spot.aggregate import SpotAggregate
@@ -25,6 +26,7 @@ class GetSpotBySpotIdCollectionService:
     def run(
         self,
         raw_data: RawDataAggregate,
+        application: ApplicationAggregate,
         spot_collection: SpotCollectionAggregate,
     ) -> SpotAggregate | None:
         conn = DBConnection().connect()
