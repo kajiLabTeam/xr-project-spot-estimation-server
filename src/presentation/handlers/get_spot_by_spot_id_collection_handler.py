@@ -1,6 +1,7 @@
-from typing import List, Tuple
+from typing import Annotated, List, Tuple
 
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from application.services.get_spot_by_spot_id_collection_service import \
@@ -13,6 +14,7 @@ from infrastructure.repository.fp_model_repository import FpModelRepository
 from infrastructure.repository.spot_repository import SpotRepository
 from infrastructure.repository.transmitter_repository import \
     TransmitterRepository
+from presentation.error.error_response import ErrorResponse
 from presentation.middleware.application_middleware import get_credential
 
 
@@ -36,9 +38,9 @@ get_spot_by_spot_id_collection_service = GetSpotBySpotIdCollectionService(
 
 @router.post("/api/spot/search", response_model=GetSpotBySpotIdCollectionResponse)
 async def get_spot_by_spot_id_collection(
-    spotIds: List[str] = Query(...),
-    rawDataFile: UploadFile = File(...),
-    credentials: Tuple[str, str] = Depends(get_credential),
+    spotIds: Annotated[List[str], Query()],
+    rawDataFile: Annotated[UploadFile, File()],
+    credentials: Annotated[Tuple[str, str], Depends(get_credential)],
 ):
     try:
         spot_collection = SpotCollectionAggregateFactory().create(
@@ -60,7 +62,13 @@ async def get_spot_by_spot_id_collection(
         )
 
         if spot is None:
-            raise HTTPException(status_code=404, detail="spot not found")
+            JSONResponse(
+                status_code=404,
+                content=ErrorResponse(
+                    error="Failed to find spot",
+                ),
+            )
+            return
 
         return GetSpotBySpotIdCollectionResponse(
             id=spot.get_id_of_private_value().get_id_of_private_value(),

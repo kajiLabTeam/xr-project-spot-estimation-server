@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Annotated, Tuple
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from pydantic import BaseModel
@@ -37,13 +37,13 @@ create_spot_service = CreateSpotService(
 
 @router.post("/api/spot/create", response_model=CreateSpotResponse, status_code=201)
 async def create_spot(
-    name: str = Form(...),
-    floor: int = Form(...),
-    locationType: str = Form(...),
-    latitude: float = Form(...),
-    longitude: float = Form(...),
-    rawDataFile: UploadFile = File(...),
-    credentials: Tuple[str, str] = Depends(get_credential),
+    name: Annotated[str, Form()],
+    floor: Annotated[int, Form()],
+    locationType: Annotated[str, Form()],
+    latitude: Annotated[float, Form()],
+    longitude: Annotated[float, Form()],
+    rawDataFile: Annotated[UploadFile, File()],
+    credentials: Annotated[Tuple[str, str], Depends(get_credential)],
 ):
     try:
         raw_data_file = await rawDataFile.read()
