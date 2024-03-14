@@ -65,6 +65,7 @@ class GetSpotBySpotIdCollectionService:
             s3=s3,
             conn=conn,
             current_fp_model=current_fp_model,
+            application=application,
             fp_model_repository=self.__fp_model_repository,
         )
 

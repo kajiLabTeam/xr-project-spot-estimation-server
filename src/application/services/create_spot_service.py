@@ -58,6 +58,7 @@ class CreateSpotService:
             conn=conn,
             spot_id=spot_id,
             raw_data=raw_data,
+            application=application,
         )
         # FPモデルを保存
         fp_model = self.__fp_model_repository.save(
@@ -65,6 +66,7 @@ class CreateSpotService:
             s3=s3,
             spot_id=spot_id,
             fp_model=fp_model,
+            application=application,
         )
 
         # 発信機情報を保存

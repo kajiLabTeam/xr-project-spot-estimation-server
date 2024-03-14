@@ -4,6 +4,7 @@ from psycopg2.extensions import connection
 from ulid import ULID
 
 from domain.error.domain_error import DomainError, DomainErrorType
+from domain.models.application.aggregate import ApplicationAggregate
 from domain.models.fp_model.aggregate import FpModelAggregate
 from domain.models.spot.spot_id import SpotAggregateId
 from domain.models.spot_collection.spot_collection_id import SpotCollectionId
@@ -60,6 +61,7 @@ class SpotCollectionAggregate:
         self,
         s3: Any,
         conn: connection,
+        application: ApplicationAggregate,
         current_fp_model: FpModelAggregate,
         fp_model_repository: FpModelRepositoryImpl,
     ):
@@ -71,6 +73,7 @@ class SpotCollectionAggregate:
                 conn=conn,
                 s3=s3,
                 spot_id=spot_id,
+                application=application,
             )
 
             agreement_percentage = current_fp_model.calculate_percentage_of_agreement(

@@ -7,7 +7,7 @@ class ApplicationAggregate:
         self.__secret_key = secret_key
 
     def get_id_of_private_value(self) -> str:
-        return self.get_id_of_private_value()
+        return self.__id.get_id_of_private_value()
 
     def get_secret_key_of_private_value(self) -> str:
         return self.__secret_key
