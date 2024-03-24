@@ -6,9 +6,9 @@ from typing import Tuple
 
 import pandas as pd
 
-from config.const import (FP_MODEL_TEMPORARY_SAVING_PATH,
-                          TRANSMITTER_THRESHOLD_NUMBER)
+from config.const import FP_MODEL_TEMPORARY_SAVING_PATH
 from domain.models.raw_data.raw_data_id import RawDataId
+from domain.models.raw_data.statistical_analyzer import StatisticalAnalyzer
 from domain.models.transmitter.ble import Ble, BleCollection
 from domain.models.transmitter.wifi import Wifi, WifiCollection
 
@@ -77,23 +77,13 @@ class RawDataAggregate:
 
     # TODO : CSVファイルからFPモデルを生成する処理を実装する
     def generate_fp_model(self) -> Tuple[bytes, str]:
-        bytes_io = BytesIO(self.__raw_data_file)
-        df = pd.read_csv(bytes_io)  # type: ignore
-        # df についてそれぞれの address の出現回数をカウント
-        address = df["address"].value_counts()
-        # df に変換
-        address_df = pd.DataFrame(address)
-
-        # 2つ以下の出現回数の address を削除
-        df = df[df["address"].isin(address_df[address_df["count"] > TRANSMITTER_THRESHOLD_NUMBER].index)]  # type: ignore
-
-        # データフレームにmac_addressごとの標準偏差を追加
-        std_dev_per_mac = df.groupby("address")["rssi"].std().reset_index()  # type: ignore
-        std_dev_per_mac.columns = ["address", "std_dev"]
+        raw_data_bytes = BytesIO(self.__raw_data_file)
+        static_analyzer = StatisticalAnalyzer(raw_data_bytes=raw_data_bytes)
 
         return (
             self.__generate_csv_bytes(
-                data_frame=std_dev_per_mac, file_path=FP_MODEL_TEMPORARY_SAVING_PATH
+                data_frame=static_analyzer.get_mean_and_std_df(),
+                file_path=FP_MODEL_TEMPORARY_SAVING_PATH,
             ),
             "csv",
         )
