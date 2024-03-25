@@ -6,7 +6,7 @@ from typing import Tuple
 
 import pandas as pd
 
-from config.const import FP_MODEL_TEMPORARY_SAVING_PATH
+from config.const import FP_MODEL_EXTENSION, FP_MODEL_TEMPORARY_SAVING_PATH
 from domain.models.raw_data.raw_data_id import RawDataId
 from domain.models.raw_data.statistical_analyzer import StatisticalAnalyzer
 from domain.models.transmitter.ble import Ble, BleCollection
@@ -75,8 +75,10 @@ class RawDataAggregate:
             wifi_collection.process_wifi_collection(),
         )
 
-    # TODO : CSVファイルからFPモデルを生成する処理を実装する
     def generate_fp_model(self) -> Tuple[bytes, str]:
+        """
+        正規分布を作成するため平均と標準偏差を含むFPモデルを生成
+        """
         raw_data_bytes = BytesIO(self.__raw_data_file)
         static_analyzer = StatisticalAnalyzer(raw_data_bytes=raw_data_bytes)
 
@@ -85,7 +87,7 @@ class RawDataAggregate:
                 data_frame=static_analyzer.get_mean_and_std_df(),
                 file_path=FP_MODEL_TEMPORARY_SAVING_PATH,
             ),
-            "csv",
+            FP_MODEL_EXTENSION,
         )
 
 
