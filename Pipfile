@@ -13,6 +13,7 @@ psycopg2-binary = "*"
 python-multipart = "*"
 pandas = "*"
 numpy = "*"
+scipy = "*"
 
 [dev-packages]
 
